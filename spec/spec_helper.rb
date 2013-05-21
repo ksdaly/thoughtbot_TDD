@@ -35,4 +35,12 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.around do |example| #rspec around block, cached backend before running any tests and resets it to the cached backend after each scenario
+    cached_backend = Searcher.backend
+    example.run
+    Searcher.backend = cached_backend
+  end
+
+
 end

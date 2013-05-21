@@ -1,11 +1,25 @@
 require 'spec_helper'
 
+#class attributes need to be reset after each test
+
 feature 'Guest searches for a hashtag' do
   scenario 'displays search results' do
     search_for '#rails'
 
     expect(current_path).to eq '/searches/rails'
     expect(page).to have_css 'li', text: /#rails/i, count: 15
+  end
+
+  scenario 'dislays known information' do
+    Searcher.backend = FakeTwitter
+    FakeTwitter['#rails'] = 5.times.map do
+      { text: 'I love #rails'}
+    end
+
+    search_for '#rails'
+
+    expect(current_path).to eq '/searches/rails'
+    expect(page).to have_css 'li', text: 'I love #rails', count: 5
   end
 
   scenario 'searches without a hashtag' do
@@ -30,4 +44,8 @@ feature 'Guest searches for a hashtag' do
     fill_in 'Search', with: term
     click_on 'Submit'
   end
+
+
+
+
 end
