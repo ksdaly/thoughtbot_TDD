@@ -9,7 +9,8 @@ def create
 end
 
 def show
-  @tweets = Twitter.search("##{params[:id]}").results #:id because it's show action, two pound signs becasue we need the hash, but removed it previously
+  @tweets = Searcher.new("##{params[:id]}") #line below moved to searcher.rb model
+  # @tweets = Twitter.search("##{params[:id]}").results #:id because it's show action, two pound signs becasue we need the hash, but removed it previously
 end
 
 end
