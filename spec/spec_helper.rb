@@ -36,6 +36,10 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
+  config.before do
+    FakeTwitter.clear
+  end
+
   config.around do |example| #rspec around block, cached backend before running any tests and resets it to the cached backend after each scenario
     cached_backend = Searcher.backend
     example.run
